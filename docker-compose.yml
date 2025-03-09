@@ -1,0 +1,21 @@
+services:
+  homepage:
+    image: "${IMAGE}"
+    container_name: "homepage"
+    restart: "always"
+    networks:
+      - "reverse-proxy"
+    expose:
+      - "3000"
+    volumes:
+      - "./config/:/app/config/"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`page.home.tastic`)"
+      - "diun.enable=true"
+      - "diun.include_tags=^v\\d+\\.\\d+\\.\\d+$"
+
+networks:
+  reverse-proxy:
+    external: true
